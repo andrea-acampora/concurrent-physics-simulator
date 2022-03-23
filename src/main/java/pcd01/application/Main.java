@@ -12,7 +12,7 @@ import pcd01.view.View;
  * 
  * @author aricci
  */
-public class SequentialBodySimulationMain {
+public class Main {
 
     public static void main(String[] args) {
 
@@ -21,6 +21,6 @@ public class SequentialBodySimulationMain {
         View view = new SimulationView(controller);
         model.addObserver(view);
         view.start();
-        controller.execute(5000);
+        controller.execute(200);
     }
 }

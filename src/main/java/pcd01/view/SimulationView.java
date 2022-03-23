@@ -22,13 +22,13 @@ import javax.swing.*;
  */
 public class SimulationView implements View {
         
-	private VisualiserFrame frame;
-	private Controller controller;
+	private final VisualiserFrame frame;
+	private final Controller controller;
 
     public SimulationView(Controller controller){
 		this.controller = controller;
     	frame = new VisualiserFrame(620, 620);
-    }
+	}
         
     public void display(SimulationState state){
  	   frame.display(state.getBodies(), state.getVt(), state.getSteps(), state.getBounds());
@@ -36,9 +36,7 @@ public class SimulationView implements View {
 
 	@Override
 	public void start() {
-		SwingUtilities.invokeLater(() -> {
-				this.frame.setVisible(true);
-		});
+		SwingUtilities.invokeLater(() -> this.frame.setVisible(true));
 	}
 
 	@Override
@@ -48,7 +46,7 @@ public class SimulationView implements View {
 
 	public static class VisualiserFrame extends JFrame {
 
-        private VisualiserPanel panel;
+        private final VisualiserPanel panel;
 
         public VisualiserFrame(int w, int h){
             setTitle("Bodies Simulation");
@@ -72,8 +70,10 @@ public class SimulationView implements View {
 	        		panel.display(bodies, vt, iter, bounds);
 	            	repaint();
 	        	});
-        	} catch (Exception ex) {}
-        };
+        	} catch (Exception ignored) {
+
+			}
+        }
         
         public void updateScale(double k) {
         	panel.updateScale(k);
@@ -89,8 +89,8 @@ public class SimulationView implements View {
     	private double vt;
     	private double scale = 1;
     	
-        private long dx;
-        private long dy;
+        private final long dx;
+        private final long dy;
         
         public VisualiserPanel(int w, int h){
             setSize(w,h);

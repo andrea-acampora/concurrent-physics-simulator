@@ -19,8 +19,7 @@ public class ModelImpl implements Model {
     public void update() {
         /* update bodies velocity */
 
-        for (int i = 0; i < state.getBodies().size(); i++) {
-            Body b = state.getBodies().get(i);
+        for (Body b : state.getBodies()) {
             /* compute total force on bodies */
             V2d totalForce = computeTotalForceOnBody(b);
             /* compute instant acceleration */
