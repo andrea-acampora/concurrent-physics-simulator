@@ -1,4 +1,4 @@
-package pcd01;
+package pcd01.utils;
 
 public class InfiniteForceException extends Exception {
 

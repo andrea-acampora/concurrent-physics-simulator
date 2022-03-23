@@ -1,5 +1,9 @@
-package pcd01;
+package pcd01.model;
 
+
+import pcd01.utils.InfiniteForceException;
+import pcd01.utils.P2d;
+import pcd01.utils.V2d;
 
 /*
  * This class represents a body
@@ -10,10 +14,10 @@ public class Body {
 	private static final double REPULSIVE_CONST = 0.01;
 	private static final double FRICTION_CONST = 1;
 	
-    private P2d pos;
-    private V2d vel;
-    private double mass;
-    private int id;
+    private final P2d pos;
+    private final V2d vel;
+    private final double mass;
+    private final int id;
     
     public Body(int id, P2d pos, V2d vel, double mass){
     	this.id = id;

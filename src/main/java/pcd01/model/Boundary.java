@@ -1,4 +1,4 @@
-package pcd01;
+package pcd01.model;
 
 /**
  * Boundary of the field where bodies move. 
