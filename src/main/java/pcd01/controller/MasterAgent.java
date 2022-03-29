@@ -6,6 +6,10 @@ import pcd01.view.SimulationView;
 import pcd01.view.View;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 
 public class MasterAgent extends Thread {
@@ -55,33 +59,20 @@ public class MasterAgent extends Thread {
     }
 
     private void createWorkerAgent() {
-        for (int i = 0; i < nWorker; i++) {
-            new WorkerAgent(taskBag, taskLatch).start();
-        }
+        IntStream.rangeClosed(0, nWorker).forEach(a -> new WorkerAgent(taskBag, taskLatch).start());
     }
 
     private void addComputeForcesTasksToBag() {
-        for (int i = 0; i < state.getBodies().size(); i++) {
-            Body body = state.getBodies().get(i);
-            taskBag.addNewTask(taskFactory.createComputeForcesTask(body, state));
-        }
+        state.getBodies().forEach(b -> taskBag.addNewTask(taskFactory.createComputeForcesTask(b, state)));
     }
 
     private void addUpdatePositionTasksToBag() {
-        for (int i = 0; i < state.getBodies().size(); i++) {
-            Body body = state.getBodies().get(i);
-            taskBag.addNewTask(taskFactory.createUpdatePositionTask(body, state));
-        }
+        state.getBodies().forEach(b -> taskBag.addNewTask(taskFactory.createUpdatePositionTask(b, state)));
     }
 
     private void addCheckCollisionTasksToBag() {
-        for (int i = 0; i < state.getBodies().size(); i++) {
-            Body body = state.getBodies().get(i);
-            taskBag.addNewTask(taskFactory.createCheckCollisionTask(body, state));
-        }
+        state.getBodies().forEach(b -> taskBag.addNewTask(taskFactory.createCheckCollisionTask(b, state)));
     }
-
-
     //to do elaborations
 }
 
