@@ -17,9 +17,9 @@ public class Main {
     public static void main(String[] args) {
 
         Model model = new ModelImpl();
-        Controller controller = new Simulator(model);
-        View view = new SimulationView(controller);
-        model.addObserver(view);
+        View view = new SimulationView();
+        Controller controller = new Simulator(model, view);
+       // model.addObserver(view);
         view.start();
         controller.execute(200);
     }

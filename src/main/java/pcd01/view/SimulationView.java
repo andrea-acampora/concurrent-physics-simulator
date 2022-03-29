@@ -23,14 +23,12 @@ import javax.swing.*;
 public class SimulationView implements View {
         
 	private final VisualiserFrame frame;
-	private final Controller controller;
 
-    public SimulationView(Controller controller){
-		this.controller = controller;
+    public SimulationView(){
     	frame = new VisualiserFrame(620, 620);
 	}
-        
-    public void display(SimulationState state){
+
+	public void display(SimulationState state){
  	   frame.display(state.getBodies(), state.getVt(), state.getSteps(), state.getBounds());
     }
 

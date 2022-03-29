@@ -52,8 +52,8 @@ public class Body {
      * 
      * @param dt time elapsed 
      */
-    public void updatePos(double dt){    	
-    	pos.sum(new V2d(vel).scalarMul(dt));
+    public void updatePos(double dt){
+        pos.sum(new V2d(vel).scalarMul(dt));
     }
 
     /**
