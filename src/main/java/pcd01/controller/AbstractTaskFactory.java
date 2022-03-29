@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface AbstractTaskFactory {
-    Task createComputeForcesTask(List<Body> body, SimulationState state);
-    Task createUpdatePositionTask(List<Body> body, SimulationState state);
-    Task createCheckCollisionTask(List<Body> body,  SimulationState state);
+    Task createComputeForcesTask(Body b, SimulationState state);
+    Task createUpdatePositionTask(Body b, SimulationState state);
+    Task createCheckCollisionTask(Body b,  SimulationState state);
 }

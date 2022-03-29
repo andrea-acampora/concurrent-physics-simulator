@@ -2,11 +2,11 @@ package pcd01.controller;
 
 public class TaskCompletionLatch {
 
-    private final int nWorkers;
+    private final int nTasks;
     private int nCompletionsNotified;
 
-    TaskCompletionLatch(int nWorkers){
-        this.nWorkers = nWorkers;
+    TaskCompletionLatch(int nTasks){
+        this.nTasks = nTasks;
         nCompletionsNotified = 0;
     }
 
@@ -15,7 +15,7 @@ public class TaskCompletionLatch {
     }
 
     public synchronized void waitCompletion() throws InterruptedException {
-        while (nCompletionsNotified < nWorkers) {
+        while (nCompletionsNotified < nTasks) {
             wait();
         }
     }

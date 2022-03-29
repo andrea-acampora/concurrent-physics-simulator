@@ -9,9 +9,8 @@ import java.util.List;
 public class TaskFactory implements AbstractTaskFactory{
 
     @Override
-    public Task createComputeForcesTask(List<Body> bodiesList, SimulationState state) {
+    public Task createComputeForcesTask(Body b, SimulationState state) {
         return () -> {
-            for (Body b : bodiesList) {
                 /* compute total force on bodies */
                 V2d totalForce = new V2d(0, 0);
 
@@ -32,27 +31,17 @@ public class TaskFactory implements AbstractTaskFactory{
                 V2d acc = new V2d(totalForce).scalarMul(1.0 / b.getMass());
                 /* update velocity */
                 b.updateVelocity(acc, state.getDt());
-            }
+
         };
     }
 
     @Override
-    public Task createUpdatePositionTask(List<Body> bodiesList, SimulationState state) {
-        return () -> {
-            /* compute bodies new pos */
-            for (Body b : bodiesList) {
-                b.updatePos(state.getDt());
-            }
-        };
+    public Task createUpdatePositionTask(Body b, SimulationState state) {
+        return () -> b.updatePos(state.getDt());
     }
 
     @Override
-    public Task createCheckCollisionTask(List<Body> bodiesList, SimulationState state) {
-        return () -> {
-            /* check collisions with boundaries */
-            for (Body b : bodiesList) {
-                b.checkAndSolveBoundaryCollision(state.getBounds());
-            }
-        };
+    public Task createCheckCollisionTask(Body b, SimulationState state) {
+        return () ->  b.checkAndSolveBoundaryCollision(state.getBounds());
     }
 }
