@@ -9,16 +9,16 @@ public class TaskBag {
         this.buffer = new LinkedList<Task>();
     }
 
-    public synchronized void clear(){
+    public synchronized void clear() {
         buffer.clear();
     }
 
-    public synchronized void addNewTask(Task task){
+    public synchronized void addNewTask(Task task) {
         this.buffer.addLast(task);
         notifyAll();
     }
 
-    public synchronized Task getATask(){
+    public synchronized Task getATask() {
         while(buffer.isEmpty()){
             try {
                 wait();
@@ -27,5 +27,9 @@ public class TaskBag {
             }
         }
         return buffer.removeFirst();
+    }
+
+    public synchronized int getSize() {
+        return this.buffer.size();
     }
 }

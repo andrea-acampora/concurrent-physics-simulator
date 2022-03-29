@@ -4,7 +4,7 @@ import pcd01.model.Body;
 
 import java.util.ArrayList;
 
-public class WorkerAgent extends Thread{
+public class WorkerAgent extends Thread {
 
 
     private final TaskBag bag;
@@ -17,10 +17,16 @@ public class WorkerAgent extends Thread{
 
     @Override
     public void run() {
-        while(true){
+        while (true) {
             Task task = bag.getATask();
             task.computeTask();
             latch.notifyCompletion();
+        }
+    }
+
+    private void log(String msg){
+        synchronized(System.out){
+            System.out.println("[ worker " + getName() + "] " + msg);
         }
     }
 }

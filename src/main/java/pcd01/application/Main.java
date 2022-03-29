@@ -19,7 +19,7 @@ public class Main {
         Model model = new ModelImpl();
         View view = new SimulationView();
         Controller controller = new Simulator(model, view);
-       // model.addObserver(view);
+        model.addObserver(view);
         view.start();
         controller.execute(200);
     }
