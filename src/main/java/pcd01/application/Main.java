@@ -20,7 +20,7 @@ public class Main {
         View view = new SimulationView();
         Simulator controller = new Simulator(stopFlag, synch);
         // model.addObserver(view);
-        new MasterAgent(view, model.getState(), 5000, stopFlag, synch).start();
+        new MasterAgent(view, model.getState(), 1000, stopFlag, synch).start();
         view.addListener(controller);
         view.start();
         //controller.execute(1000);

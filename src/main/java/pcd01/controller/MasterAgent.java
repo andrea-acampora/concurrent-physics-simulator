@@ -26,7 +26,7 @@ public class MasterAgent extends Thread {
         this.view = view;
         this.nWorker = Runtime.getRuntime().availableProcessors() + 1;
         this.taskBag = new TaskBag();
-        this.taskLatch = new TaskCompletionLatch(nWorker);
+        this.taskLatch = new TaskCompletionLatch(state.getBodies().size());
         this.stopFlag = stopFlag; 
         this.synch = synch; 
     }
