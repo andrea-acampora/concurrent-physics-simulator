@@ -21,13 +21,13 @@ public class Simulator implements InputListener {
 	}*/
 
 	@Override
-	public void started() {
+	public synchronized void started() {
 		stopFlag.reset();
 		synch.notifyStarted();
 	}
 
 	@Override
-	public void stopped() {
+	public synchronized void stopped() {
 		synch.reset();
 		stopFlag.set();
 	}
