@@ -3,18 +3,32 @@ package pcd01.controller;
 import pcd01.model.Model;
 import pcd01.view.View;
 
-public class Simulator implements Controller {
+public class Simulator implements InputListener {
 
-	private final Model model;
-	private final View view;
+//	private final Model model;
+//	private final View view;
+	private final Flag stopFlag;
+	private final StartSynch synch;
 
-	public Simulator(Model model, View view) {
-		this.model = model;
-		this.view = view;
+
+	public Simulator(Flag stopFlag, StartSynch synch) {
+		this.stopFlag = stopFlag;
+		this.synch = synch;
 	}
 	
-	public void execute(long maxSteps) {
-		/* simulation loop*/
+	/* public void execute(long maxSteps) {
 		new MasterAgent(view, model.getState(), maxSteps).start();
+	}*/
+
+	@Override
+	public void started() {
+		stopFlag.reset();
+		synch.notifyStarted();
+	}
+
+	@Override
+	public void stopped() {
+		synch.reset();
+		stopFlag.set();
 	}
 }

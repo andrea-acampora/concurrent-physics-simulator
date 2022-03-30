@@ -4,8 +4,6 @@ import pcd01.model.Body;
 import pcd01.model.SimulationState;
 import pcd01.utils.V2d;
 
-import java.util.List;
-
 public class TaskFactory implements AbstractTaskFactory{
 
     @Override
@@ -13,7 +11,6 @@ public class TaskFactory implements AbstractTaskFactory{
         return () -> {
                 /* compute total force on bodies */
                 V2d totalForce = new V2d(0, 0);
-
                 /* compute total repulsive force */
                 for (int j = 0; j < state.getBodies().size(); j++) {
                     Body otherBody = state.getBodies().get(j);
@@ -24,14 +21,12 @@ public class TaskFactory implements AbstractTaskFactory{
                         } catch (Exception ignored) {}
                     }
                 }
-
                 /* add friction force */
                 totalForce.sum(b.getCurrentFrictionForce());
                 /* compute instant acceleration */
                 V2d acc = new V2d(totalForce).scalarMul(1.0 / b.getMass());
                 /* update velocity */
                 b.updateVelocity(acc, state.getDt());
-
         };
     }
 

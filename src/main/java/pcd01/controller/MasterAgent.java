@@ -10,27 +10,36 @@ public class MasterAgent extends Thread {
 
     private final long maxSteps;
     private final View view;
+    private final StartSynch synch;
+    private final Flag stopFlag;
     private SimulationState state;
     private int nWorker;
     private TaskBag taskBag;
     private TaskCompletionLatch taskLatch;
     private final AbstractTaskFactory taskFactory;
+    
 
-    public MasterAgent(View view, SimulationState state, long maxSteps) {
+    public MasterAgent(View view, SimulationState state, long maxSteps, Flag stopFlag, StartSynch synch) {
         this.state = state;
         this.taskFactory = new TaskFactory();
         this.maxSteps = maxSteps;
         this.view = view;
         this.nWorker = Runtime.getRuntime().availableProcessors() + 1;
         this.taskBag = new TaskBag();
-        taskLatch = new TaskCompletionLatch(nWorker);
+        this.taskLatch = new TaskCompletionLatch(nWorker);
+        this.stopFlag = stopFlag; 
+        this.synch = synch; 
     }
 
     public void run() {
 
         Chrono time = new Chrono();
         this.createWorkerAgent();
+        System.out.println("master waiting for start...");
+        synch.waitStart();
+        System.out.println("master started");
         time.start();
+        System.out.println("flag = " + !stopFlag.isSet());
         while(state.getSteps() < maxSteps){
             this.addComputeForcesTasksToBag();
 
@@ -46,7 +55,11 @@ public class MasterAgent extends Thread {
 
             state.incrementSteps();
             state.setVt(state.getVt() + state.getDt());
-          // view.display(state);
+
+            if(stopFlag.isSet()){
+                synch.waitStart();
+            }
+            view.display(state);
         }
         time.stop();
         System.out.println("Time elapsed: " + time.getTime() + " ms.");
@@ -64,7 +77,7 @@ public class MasterAgent extends Thread {
     }
 
     private void createWorkerAgent() {
-        IntStream.range(0, nWorker).forEach(a -> new WorkerAgent(taskBag, taskLatch).start());
+        IntStream.range(0, nWorker).forEach(a -> new WorkerAgent(taskBag, taskLatch, stopFlag).start());
     }
 
     private void addComputeForcesTasksToBag() {

@@ -9,10 +9,12 @@ public class WorkerAgent extends Thread {
 
     private final TaskBag bag;
     private final TaskCompletionLatch latch;
+    private final Flag stopFlag;
 
-    public WorkerAgent(TaskBag bag, TaskCompletionLatch latch) {
+    public WorkerAgent(TaskBag bag, TaskCompletionLatch latch, Flag stopFlag) {
         this.bag = bag;
         this.latch = latch;
+        this.stopFlag = stopFlag;
     }
 
     @Override
