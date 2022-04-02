@@ -19,12 +19,11 @@ public class Main {
         Model model = new ModelImpl();
         View view = new SimulationView();
         Simulator controller = new Simulator(stopFlag, synch);
-        // model.addObserver(view);
-        new MasterAgentOneBodyPerTask(view, model.getState(), 1000, stopFlag, synch).start();
+        //new MasterAgentOneBodyPerTask(view, model.getState(), 1000, stopFlag, synch).start();
+        new MasterAgentSubListPerTask(view, model.getState(), 1000, stopFlag, synch).start();
         if (USING_VIEW){
             view.addListener(controller);
             view.start();
         }
-        //controller.execute(1000);
     }
 }

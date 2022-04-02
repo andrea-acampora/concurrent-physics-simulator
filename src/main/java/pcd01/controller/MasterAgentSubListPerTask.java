@@ -3,14 +3,12 @@ package pcd01.controller;
 import com.google.common.collect.Lists;
 import pcd01.model.Body;
 import pcd01.model.SimulationState;
-import pcd01.model.TaskFactory;
 import pcd01.view.View;
-
 import java.util.List;
 import java.util.stream.IntStream;
 
 public class MasterAgentSubListPerTask extends AbstractMasterAgent {
-    private List<List<Body>> bodiesSplit;
+    private final List<List<Body>> bodiesSplit;
 
     public MasterAgentSubListPerTask(View view, SimulationState state, long maxSteps, Flag stopFlag, StartSynch synch) {
         super(view, state, maxSteps, stopFlag, synch);

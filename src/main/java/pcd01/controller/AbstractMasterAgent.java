@@ -79,20 +79,8 @@ public abstract class AbstractMasterAgent extends Thread{
         IntStream.range(0, nWorker).forEach(a -> new WorkerAgent(taskBag, taskLatch, stopFlag, synch).start());
     }
 
-    /*
-    private void addComputeForcesTasksToBag() {
-        state.getBodies().forEach( b -> taskBag.addNewTask(taskFactory.createComputeForcesTask(b, state)));
-    }*/
-
-    /*
-    private void addUpdatePositionTasksToBag() {
-        state.getBodies().forEach( b -> taskBag.addNewTask(taskFactory.createUpdatePositionTask(b, state)));
-    }*/
-
     abstract void addComputeForcesTasksToBag();
     abstract void addUpdatePositionTasksToBag();
-
-
 
     private void log(String msg){
         synchronized(System.out){
