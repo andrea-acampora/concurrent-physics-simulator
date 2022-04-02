@@ -9,6 +9,7 @@ public class StartSynch {
 
     public synchronized void waitStart() {
         while (!started) {
+            System.out.println("wait sync");
             try {
                 wait();
             } catch (InterruptedException ex) {

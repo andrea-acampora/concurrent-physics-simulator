@@ -64,17 +64,7 @@ public class Body {
     public void updateVelocity(V2d acc, double dt){    	
     	vel.sum(new V2d(acc).scalarMul(dt));
     }
-    
-    /**
-     * Change the velocity
-     * 
-     * @param vx
-     * @param vy
-     */
-    public void changeVel(double vx, double vy){
-    	vel.change(vx, vy);
-    }
-  	
+
     /**
      * Computes the distance from the specified body
      * 
@@ -143,7 +133,5 @@ public class Body {
             pos.change(pos.getX(), bounds.getY0());
             vel.change(vel.getX(), -vel.getY());
         }
-    }        
-    
-
+    }
 }

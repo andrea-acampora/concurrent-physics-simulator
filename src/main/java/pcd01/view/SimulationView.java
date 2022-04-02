@@ -1,5 +1,6 @@
 package pcd01.view;
 
+import pcd01.application.Main;
 import pcd01.controller.InputListener;
 import pcd01.model.Body;
 import pcd01.model.Boundary;
@@ -79,7 +80,9 @@ public class SimulationView implements View{
 				}
 			});
 			setContentPane(cp);
-			this.setVisible(true);
+			if(Main.USING_VIEW){
+				this.setVisible(true);
+			}
 		}
 
 		public void display(ArrayList<Body> bodies, double vt, long iter, Boundary bounds){

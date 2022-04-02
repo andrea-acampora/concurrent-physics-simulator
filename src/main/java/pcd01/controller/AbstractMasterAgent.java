@@ -1,5 +1,6 @@
 package pcd01.controller;
 
+import pcd01.application.Main;
 import pcd01.model.AbstractTaskFactory;
 import pcd01.model.SimulationState;
 import pcd01.model.TaskBag;
@@ -9,51 +10,44 @@ import pcd01.view.View;
 
 import java.util.stream.IntStream;
 
-public class MasterAgent extends Thread {
-
+public abstract class AbstractMasterAgent extends Thread{
     private final long maxSteps;
     private final View view;
     private final StartSynch synch;
     private final Flag stopFlag;
-    private SimulationState state;
-    private int nWorker;
-    private TaskBag taskBag;
+    protected SimulationState state;
+    protected int nWorker;
+    protected TaskBag taskBag;
     private TaskCompletionLatch taskLatch;
-    private final AbstractTaskFactory taskFactory;
-    
+    protected AbstractTaskFactory taskFactory;
 
-    public MasterAgent(View view, SimulationState state, long maxSteps, Flag stopFlag, StartSynch synch) {
+
+    public AbstractMasterAgent(View view, SimulationState state, long maxSteps, Flag stopFlag, StartSynch synch) {
         this.state = state;
-        this.taskFactory = new TaskFactory();
         this.maxSteps = maxSteps;
         this.view = view;
+        this.taskFactory = new TaskFactory();
         this.nWorker = Runtime.getRuntime().availableProcessors() + 1;
         this.taskBag = new TaskBag();
         this.taskLatch = new TaskCompletionLatch(state.getBodies().size());
-        this.stopFlag = stopFlag; 
-        this.synch = synch; 
+        this.stopFlag = stopFlag;
+        this.synch = synch;
     }
 
     public void run() {
 
         Chrono time = new Chrono();
-        this.createWorkerAgent();
-        System.out.println("master waiting for start...");
-        synch.waitStart();
-        System.out.println("master started");
+        this.createWorkerAgents();
+        if(Main.USING_VIEW){
+            synch.waitStart();
+        }
         time.start();
         System.out.println("flag = " + !stopFlag.isSet());
         while(state.getSteps() < maxSteps){
             this.addComputeForcesTasksToBag();
-
             this.waitStepDone();
 
             this.addUpdatePositionTasksToBag();
-
-            this.waitStepDone();
-
-            this.addCheckCollisionTasksToBag();
-
             this.waitStepDone();
 
             state.incrementSteps();
@@ -62,7 +56,9 @@ public class MasterAgent extends Thread {
             if(stopFlag.isSet()){
                 synch.waitStart();
             }
-            view.display(state);
+            if(Main.USING_VIEW){
+                view.display(state);
+            }
         }
         time.stop();
         System.out.println("Time elapsed: " + time.getTime() + " ms.");
@@ -79,26 +75,28 @@ public class MasterAgent extends Thread {
         this.taskBag.clear();
     }
 
-    private void createWorkerAgent() {
-        IntStream.range(0, nWorker).forEach(a -> new WorkerAgent(taskBag, taskLatch, stopFlag).start());
+    private void createWorkerAgents() {
+        IntStream.range(0, nWorker).forEach(a -> new WorkerAgent(taskBag, taskLatch, stopFlag, synch).start());
     }
 
+    /*
     private void addComputeForcesTasksToBag() {
         state.getBodies().forEach( b -> taskBag.addNewTask(taskFactory.createComputeForcesTask(b, state)));
-    }
+    }*/
 
+    /*
     private void addUpdatePositionTasksToBag() {
         state.getBodies().forEach( b -> taskBag.addNewTask(taskFactory.createUpdatePositionTask(b, state)));
-    }
+    }*/
 
-    private void addCheckCollisionTasksToBag() {
-        state.getBodies().forEach( b -> taskBag.addNewTask(taskFactory.createCheckCollisionTask(b, state)));
-    }
+    abstract void addComputeForcesTasksToBag();
+    abstract void addUpdatePositionTasksToBag();
+
+
 
     private void log(String msg){
         synchronized(System.out){
             System.out.println("[ master ] " + msg);
         }
     }
-
 }
