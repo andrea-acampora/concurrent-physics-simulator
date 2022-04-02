@@ -1,4 +1,4 @@
-package pcd01.controller;
+package pcd01.controller.concurrent;
 
 public class TaskCompletionLatch {
 

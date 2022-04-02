@@ -1,4 +1,4 @@
-package pcd01.model;
+package pcd01.model.concurrent;
 
 import pcd01.model.Body;
 @FunctionalInterface

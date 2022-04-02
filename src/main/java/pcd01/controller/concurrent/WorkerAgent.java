@@ -1,7 +1,7 @@
-package pcd01.controller;
+package pcd01.controller.concurrent;
 
-import pcd01.model.Task;
-import pcd01.model.TaskBag;
+import pcd01.model.concurrent.Task;
+import pcd01.model.concurrent.TaskBag;
 
 public class WorkerAgent extends Thread {
 
@@ -21,14 +21,10 @@ public class WorkerAgent extends Thread {
     @Override
     public void run() {
         while (true) {
-            Task task = bag.getATask();
-            if(stopFlag.isSet()){
-                System.out.println(stopFlag.isSet());
-                log("wait");
+            if (stopFlag.isSet()) {
                 synch.waitStart();
-                log("resumed");
-                System.out.println(stopFlag.isSet());
             }
+            Task task = bag.getATask();
             task.computeTask();
             latch.notifyCompletion();
         }

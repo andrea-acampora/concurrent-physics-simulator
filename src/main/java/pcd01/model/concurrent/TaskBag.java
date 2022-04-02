@@ -1,6 +1,4 @@
-package pcd01.model;
-
-import pcd01.model.Task;
+package pcd01.model.concurrent;
 
 import java.util.LinkedList;
 

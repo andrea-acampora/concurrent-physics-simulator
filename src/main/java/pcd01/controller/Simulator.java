@@ -1,12 +1,10 @@
 package pcd01.controller;
 
-import pcd01.model.Model;
-import pcd01.view.View;
+import pcd01.controller.concurrent.Flag;
+import pcd01.controller.concurrent.StartSynch;
 
 public class Simulator implements InputListener {
 
-//	private final Model model;
-//	private final View view;
 	private final Flag stopFlag;
 	private final StartSynch synch;
 
@@ -15,19 +13,15 @@ public class Simulator implements InputListener {
 		this.stopFlag = stopFlag;
 		this.synch = synch;
 	}
-	
-	/* public void execute(long maxSteps) {
-		new MasterAgent(view, model.getState(), maxSteps).start();
-	}*/
 
 	@Override
-	public synchronized void started() {
+	public synchronized void start() {
 		stopFlag.reset();
 		synch.notifyStarted();
 	}
 
 	@Override
-	public synchronized void stopped() {
+	public synchronized void stop() {
 		synch.reset();
 		stopFlag.set();
 	}

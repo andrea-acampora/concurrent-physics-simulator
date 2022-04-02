@@ -1,10 +1,10 @@
-package pcd01.controller;
+package pcd01.controller.concurrent;
 
 import pcd01.application.Main;
-import pcd01.model.AbstractTaskFactory;
+import pcd01.model.concurrent.AbstractTaskFactory;
 import pcd01.model.SimulationState;
-import pcd01.model.TaskBag;
-import pcd01.model.TaskFactory;
+import pcd01.model.concurrent.TaskBag;
+import pcd01.model.concurrent.TaskFactory;
 import pcd01.utils.Chrono;
 import pcd01.view.View;
 
@@ -18,7 +18,7 @@ public abstract class AbstractMasterAgent extends Thread{
     protected SimulationState state;
     protected int nWorker;
     protected TaskBag taskBag;
-    private TaskCompletionLatch taskLatch;
+    protected TaskCompletionLatch taskLatch;
     protected AbstractTaskFactory taskFactory;
 
 
@@ -29,7 +29,6 @@ public abstract class AbstractMasterAgent extends Thread{
         this.taskFactory = new TaskFactory();
         this.nWorker = Runtime.getRuntime().availableProcessors() + 1;
         this.taskBag = new TaskBag();
-        this.taskLatch = new TaskCompletionLatch(state.getBodies().size());
         this.stopFlag = stopFlag;
         this.synch = synch;
     }
@@ -38,11 +37,10 @@ public abstract class AbstractMasterAgent extends Thread{
 
         Chrono time = new Chrono();
         this.createWorkerAgents();
-        if(Main.USING_VIEW){
+        if(Main.VIEW_ENABLED){
             synch.waitStart();
         }
         time.start();
-        System.out.println("flag = " + !stopFlag.isSet());
         while(state.getSteps() < maxSteps){
             this.addComputeForcesTasksToBag();
             this.waitStepDone();
@@ -56,7 +54,7 @@ public abstract class AbstractMasterAgent extends Thread{
             if(stopFlag.isSet()){
                 synch.waitStart();
             }
-            if(Main.USING_VIEW){
+            if(Main.VIEW_ENABLED){
                 view.display(state);
             }
         }

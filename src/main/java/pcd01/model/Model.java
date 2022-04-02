@@ -6,7 +6,4 @@ public interface Model {
 
     SimulationState getState();
 
-    void addObserver(ModelObserver observer);
-
-    void notifyObserver();
 }

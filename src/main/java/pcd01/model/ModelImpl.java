@@ -2,17 +2,12 @@ package pcd01.model;
 
 import pcd01.utils.V2d;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ModelImpl implements Model {
 
-    private final List<ModelObserver> observers;
     private final SimulationState state;
 
-    public ModelImpl() {
-        state = new SimulationState();
-        observers = new ArrayList<>();
+    public ModelImpl(final int numberOfBodies) {
+        state = new SimulationState(numberOfBodies);
     }
 
     @Override
@@ -40,9 +35,6 @@ public class ModelImpl implements Model {
 
         /* update virtual time */
         state.setVt(state.getVt() + state.getDt());
-
-        /* display current stage */
-        notifyObserver();
     }
 
     @Override
@@ -50,24 +42,11 @@ public class ModelImpl implements Model {
         return this.state;
     }
 
-    @Override
-    public void addObserver(ModelObserver observer) {
-        this.observers.add(observer);
-    }
-
-    @Override
-    public void notifyObserver() {
-        for (ModelObserver observer: observers){
-            observer.modelUpdated(this);
-        }
-    }
-
     private V2d computeTotalForceOnBody(Body b) {
 
         V2d totalForce = new V2d(0, 0);
 
         /* compute total repulsive force */
-
         for (int j = 0; j < state.getBodies().size(); j++) {
             Body otherBody = state.getBodies().get(j);
             if (!b.equals(otherBody)) {

@@ -4,7 +4,6 @@ import pcd01.application.Main;
 import pcd01.controller.InputListener;
 import pcd01.model.Body;
 import pcd01.model.Boundary;
-import pcd01.model.Model;
 import pcd01.model.SimulationState;
 import pcd01.utils.P2d;
 
@@ -13,13 +12,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
 
-/**
- * Simulation view
- *
- * @author aricci
- *
- */
-public class SimulationView implements View{
+public class SimulationView implements View {
 
 	private final VisualiserFrame frame;
 	
@@ -36,14 +29,8 @@ public class SimulationView implements View{
 		frame.display(state.getBodies(), state.getVt(), state.getSteps(), state.getBounds());
 	}
 
-	@Override
 	public void start() {
 		SwingUtilities.invokeLater(() -> this.frame.setVisible(true));
-	}
-
-	@Override
-	public void modelUpdated(Model model) {
-		display(model.getState());
 	}
 
 	public static class VisualiserFrame extends JFrame implements ActionListener {
@@ -51,13 +38,13 @@ public class SimulationView implements View{
 		private final VisualiserPanel panel;
 		private final ArrayList<InputListener> listeners;
 
-		public VisualiserFrame(int w, int h){
+		public VisualiserFrame(int w, int h) {
 			listeners = new ArrayList<>();
 			JButton startButton = new JButton("start");
 			JButton stopButton = new JButton("stop");
 			startButton.addActionListener(this);
 			stopButton.addActionListener(this);
-			setTitle("Bodies Simulation");
+			setTitle("Concurrent Bodies Simulator");
 			setSize(w,h);
 			setResizable(false);
 
@@ -69,6 +56,8 @@ public class SimulationView implements View{
 			LayoutManager layout = new BorderLayout();
 			cp.setLayout(layout);
 			panel = new VisualiserPanel(w,h);
+			cp.addKeyListener(panel);
+			controlPanel.addKeyListener(panel);
 			cp.add(BorderLayout.NORTH,controlPanel);
 			cp.add(BorderLayout.CENTER, panel);
 			addWindowListener(new WindowAdapter(){
@@ -79,8 +68,9 @@ public class SimulationView implements View{
 					System.exit(-1);
 				}
 			});
+			addKeyListener(panel);
 			setContentPane(cp);
-			if(Main.USING_VIEW){
+			if(Main.VIEW_ENABLED){
 				this.setVisible(true);
 			}
 		}
@@ -109,17 +99,14 @@ public class SimulationView implements View{
 		}
 
 		private void notifyStarted(){
-			System.out.println("start");
-			System.out.println("listeners = " + listeners);
 			for (InputListener l: listeners){
-				l.started();
+				l.start();
 			}
 		}
 
 		private void notifyStopped(){
-			System.out.println("stop");
 			for (InputListener l: listeners){
-				l.stopped();
+				l.stop();
 			}
 		}
 
@@ -203,6 +190,7 @@ public class SimulationView implements View{
 
 		@Override
 		public void keyPressed(KeyEvent e) {
+			System.out.println("here");
 			if (e.getKeyCode() == 38){  		/* KEY UP */
 				scale *= 1.1;
 			} else if (e.getKeyCode() == 40){  	/* KEY DOWN */

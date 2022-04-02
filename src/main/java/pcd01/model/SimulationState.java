@@ -14,6 +14,8 @@ public class SimulationState {
     /* boundary of the field */
     private Boundary bounds;
 
+    private int nBodies;
+
     /* virtual time */
     private double vt;
 
@@ -22,13 +24,13 @@ public class SimulationState {
 
     long steps;
 
-    public SimulationState() {
+    public SimulationState(final int nBodies) {
+        this.nBodies = nBodies;
         this.vt = 0;
         this.dt = 0.001;
         steps = 0;
 
         bounds = new Boundary(-6.0, -6.0, 6.0, 6.0);
-        int nBodies = 1000;
         Random rand = new Random(System.currentTimeMillis());
         bodies = new ArrayList<>();
         for (int i = 0; i < nBodies; i++) {

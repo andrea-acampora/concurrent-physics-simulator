@@ -1,5 +1,7 @@
-package pcd01.model;
+package pcd01.model.concurrent;
 
+import pcd01.model.Body;
+import pcd01.model.SimulationState;
 import pcd01.utils.V2d;
 
 import java.util.List;
@@ -7,7 +9,7 @@ import java.util.List;
 public class TaskFactory implements AbstractTaskFactory {
 
     @Override
-    public Task createComputeForcesTask(SimulationState state, Body... bodiesList) {
+    public Task createComputeForcesTask(SimulationState state, List<Body> bodiesList) {
         return () -> {
             for (Body b : bodiesList) {
                 /* compute total force on bodies */
@@ -35,7 +37,7 @@ public class TaskFactory implements AbstractTaskFactory {
     }
 
     @Override
-    public Task createUpdatePositionTask(SimulationState state, Body... bodiesList) {
+    public Task createUpdatePositionTask(SimulationState state, List<Body> bodiesList) {
         return () -> {
             /* compute bodies new pos */
             for (Body b : bodiesList) {

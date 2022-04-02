@@ -1,4 +1,4 @@
-package pcd01.controller;
+package pcd01.controller.concurrent;
 
 public class Flag {
     private boolean flag;
@@ -19,4 +19,3 @@ public class Flag {
         return flag;
     }
 }
-

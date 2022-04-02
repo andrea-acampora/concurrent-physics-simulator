@@ -1,4 +1,4 @@
-package pcd01.controller;
+package pcd01.controller.concurrent;
 
 public class StartSynch {
     private boolean started;
@@ -9,7 +9,6 @@ public class StartSynch {
 
     public synchronized void waitStart() {
         while (!started) {
-            System.out.println("wait sync");
             try {
                 wait();
             } catch (InterruptedException ex) {
