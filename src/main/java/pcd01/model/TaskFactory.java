@@ -1,10 +1,12 @@
-package pcd01.controller;
+package pcd01.model;
 
+import pcd01.model.AbstractTaskFactory;
 import pcd01.model.Body;
 import pcd01.model.SimulationState;
+import pcd01.model.Task;
 import pcd01.utils.V2d;
 
-public class TaskFactory implements AbstractTaskFactory{
+public class TaskFactory implements AbstractTaskFactory {
 
     @Override
     public Task createComputeForcesTask(Body b, SimulationState state) {

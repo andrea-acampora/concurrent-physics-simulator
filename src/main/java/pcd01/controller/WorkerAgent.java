@@ -1,8 +1,7 @@
 package pcd01.controller;
 
-import pcd01.model.Body;
-
-import java.util.ArrayList;
+import pcd01.model.Task;
+import pcd01.model.TaskBag;
 
 public class WorkerAgent extends Thread {
 

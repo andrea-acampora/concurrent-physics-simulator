@@ -1,7 +1,7 @@
 package pcd01.model;
 
 
-import pcd01.utils.InfiniteForceException;
+import pcd01.exception.InfiniteForceException;
 import pcd01.utils.P2d;
 import pcd01.utils.V2d;
 

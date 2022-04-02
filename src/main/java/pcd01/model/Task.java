@@ -1,4 +1,4 @@
-package pcd01.controller;
+package pcd01.model;
 
 import pcd01.model.Body;
 @FunctionalInterface

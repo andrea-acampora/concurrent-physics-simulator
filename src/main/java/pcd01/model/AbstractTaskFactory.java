@@ -1,10 +1,4 @@
-package pcd01.controller;
-
-import pcd01.model.Body;
-import pcd01.model.SimulationState;
-
-import java.util.ArrayList;
-import java.util.List;
+package pcd01.model;
 
 public interface AbstractTaskFactory {
     Task createComputeForcesTask(Body b, SimulationState state);

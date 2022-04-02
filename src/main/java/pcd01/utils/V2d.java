@@ -9,6 +9,8 @@
  */
 package pcd01.utils;
 
+import pcd01.exception.NullVectorException;
+
 /**
  *
  * 2-dimensional vector

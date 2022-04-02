@@ -1,6 +1,9 @@
 package pcd01.controller;
 
+import pcd01.model.AbstractTaskFactory;
 import pcd01.model.SimulationState;
+import pcd01.model.TaskBag;
+import pcd01.model.TaskFactory;
 import pcd01.utils.Chrono;
 import pcd01.view.View;
 
