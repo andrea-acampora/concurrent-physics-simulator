@@ -37,38 +37,41 @@ public class SimulationView implements View {
 
 		private final VisualiserPanel panel;
 		private final ArrayList<InputListener> listeners;
+		private final JButton startButton;
+		private final JButton stopButton;
+
 
 		public VisualiserFrame(int w, int h) {
-			listeners = new ArrayList<>();
-			JButton startButton = new JButton("start");
-			JButton stopButton = new JButton("stop");
-			startButton.addActionListener(this);
-			stopButton.addActionListener(this);
+			this.listeners = new ArrayList<>();
+			this.startButton = new JButton("start");
+			this.stopButton = new JButton("stop");
+			this.panel = new VisualiserPanel(w,h);
+
 			setTitle("Concurrent Bodies Simulator");
 			setSize(w,h);
 			setResizable(false);
 
+			startButton.addActionListener(this);
+			stopButton.addActionListener(this);
+
 			JPanel controlPanel = new JPanel();
+			JPanel cp = new JPanel();
+
 			controlPanel.add(startButton);
 			controlPanel.add(stopButton);
-
-			JPanel cp = new JPanel();
-			LayoutManager layout = new BorderLayout();
-			cp.setLayout(layout);
-			panel = new VisualiserPanel(w,h);
-			cp.addKeyListener(panel);
-			controlPanel.addKeyListener(panel);
+			cp.setLayout(new BorderLayout());
 			cp.add(BorderLayout.NORTH,controlPanel);
 			cp.add(BorderLayout.CENTER, panel);
+			cp.add(BorderLayout.SOUTH,controlPanel);
+
 			addWindowListener(new WindowAdapter(){
 				public void windowClosing(WindowEvent ev){
-					System.exit(-1);
+					System.exit(0);
 				}
 				public void windowClosed(WindowEvent ev){
-					System.exit(-1);
+					System.exit(0);
 				}
 			});
-			addKeyListener(panel);
 			setContentPane(cp);
 			if(Main.VIEW_ENABLED){
 				this.setVisible(true);
@@ -81,21 +84,23 @@ public class SimulationView implements View {
 					panel.display(bodies, vt, iter, bounds);
 					repaint();
 				});
-			} catch (Exception ex) {}
-		};
-
-		public void updateScale(double k) {
-			panel.updateScale(k);
+			} catch (Exception ignored) {}
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent actionEvent) {
 			String cmd = actionEvent.getActionCommand();
 			if (cmd.equals("start")){
+				this.startButton.transferFocus();
+				this.stopButton.transferFocus();
 				notifyStarted();
 			} else if (cmd.equals("stop")){
 				notifyStopped();
 			}
+		}
+
+		public void addListener(InputListener l) {
+			listeners.add(l);
 		}
 
 		private void notifyStarted(){
@@ -108,10 +113,6 @@ public class SimulationView implements View {
 			for (InputListener l: listeners){
 				l.stop();
 			}
-		}
-
-		public void addListener(InputListener l) {
-			listeners.add(l);
 		}
 	}
 
@@ -184,13 +185,8 @@ public class SimulationView implements View {
 			this.nIter = iter;
 		}
 
-		public void updateScale(double k) {
-			scale *= k;
-		}
-
 		@Override
 		public void keyPressed(KeyEvent e) {
-			System.out.println("here");
 			if (e.getKeyCode() == 38){  		/* KEY UP */
 				scale *= 1.1;
 			} else if (e.getKeyCode() == 40){  	/* KEY DOWN */
