@@ -48,15 +48,17 @@ public abstract class AbstractMasterAgent extends Thread{
             this.addUpdatePositionTasksToBag();
             this.waitStepDone();
 
-            state.incrementSteps();
             state.setVt(state.getVt() + state.getDt());
 
             if(stopFlag.isSet()){
                 synch.waitStart();
             }
+            log("finished step " + state.getSteps() + " - pos of ball 0" + state.getBodies().get(0).getPos());
+
             if(Main.VIEW_ENABLED){
                 view.display(state);
             }
+            state.incrementSteps();
         }
         time.stop();
         System.out.println("Time elapsed: " + time.getTime() + " ms.");
