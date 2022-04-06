@@ -5,6 +5,7 @@ import pcd01.model.SimulationState;
 import pcd01.model.concurrent.TaskBag;
 import pcd01.model.concurrent.TaskFactory;
 import pcd01.utils.Chrono;
+import gov.nasa.jpf.vm.Verify;
 
 import java.util.stream.IntStream;
 
@@ -35,12 +36,11 @@ public abstract class AbstractMasterAgent extends Thread{
 
             this.addUpdatePositionTasksToBag();
             this.waitStepDone();
-
             state.setVt(state.getVt() + state.getDt());
             state.incrementSteps();
         }
         time.stop();
-        System.out.println("Time elapsed: " + time.getTime() + " ms.");
+       // System.out.println("Time elapsed: " + time.getTime() + " ms.");
         System.exit(0);
     }
 
@@ -50,8 +50,13 @@ public abstract class AbstractMasterAgent extends Thread{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        Verify.beginAtomic();
         this.taskLatch.reset();
+        Verify.endAtomic();
+
+        Verify.beginAtomic();
         this.taskBag.clear();
+        Verify.endAtomic();
     }
 
     private void createWorkerAgents() {
