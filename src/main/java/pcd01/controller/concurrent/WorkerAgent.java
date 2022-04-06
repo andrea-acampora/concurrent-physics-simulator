@@ -2,28 +2,24 @@ package pcd01.controller.concurrent;
 
 import pcd01.model.concurrent.Task;
 import pcd01.model.concurrent.TaskBag;
+import gov.nasa.jpf.vm.Verify;
 
 public class WorkerAgent extends Thread {
 
     private final TaskBag bag;
     private final TaskCompletionLatch latch;
-    private final Flag stopFlag;
-    private final StartSynch startSynch;
 
-    public WorkerAgent(TaskBag bag, TaskCompletionLatch latch, Flag stopFlag, StartSynch startSynch) {
+    public WorkerAgent(TaskBag bag, TaskCompletionLatch latch) {
         this.bag = bag;
         this.latch = latch;
-        this.stopFlag = stopFlag;
-        this.startSynch = startSynch;
     }
 
     @Override
     public void run() {
         while (true) {
-            if (stopFlag.isSet()) {
-                startSynch.waitStart();
-            }
+            Verify.beginAtomic();
             Task task = bag.getATask();
+            Verify.endAtomic();
             task.computeTask();
             latch.notifyCompletion();
         }
