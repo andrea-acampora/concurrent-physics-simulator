@@ -5,24 +5,23 @@ import pcd01.model.concurrent.TaskBag;
 
 public class WorkerAgent extends Thread {
 
-
     private final TaskBag bag;
     private final TaskCompletionLatch latch;
     private final Flag stopFlag;
-    private final StartSynch synch;
+    private final StartSynch startSynch;
 
-    public WorkerAgent(TaskBag bag, TaskCompletionLatch latch, Flag stopFlag, StartSynch synch) {
+    public WorkerAgent(TaskBag bag, TaskCompletionLatch latch, Flag stopFlag, StartSynch startSynch) {
         this.bag = bag;
         this.latch = latch;
         this.stopFlag = stopFlag;
-        this.synch = synch; 
+        this.startSynch = startSynch;
     }
 
     @Override
     public void run() {
         while (true) {
             if (stopFlag.isSet()) {
-                synch.waitStart();
+                startSynch.waitStart();
             }
             Task task = bag.getATask();
             task.computeTask();

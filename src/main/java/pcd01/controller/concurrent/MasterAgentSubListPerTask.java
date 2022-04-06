@@ -10,8 +10,8 @@ import java.util.stream.IntStream;
 public class MasterAgentSubListPerTask extends AbstractMasterAgent {
     private final List<List<Body>> bodiesSplit;
 
-    public MasterAgentSubListPerTask(View view, SimulationState state, long maxSteps, Flag stopFlag, StartSynch synch) {
-        super(view, state, maxSteps, stopFlag, synch);
+    public MasterAgentSubListPerTask(View view, SimulationState state, long maxSteps, Flag stopFlag, StartSynch startSynch) {
+        super(view, state, maxSteps, stopFlag, startSynch);
         this.bodiesSplit = Lists.partition(state.getBodies(),  state.getBodies().size() / nWorker +1);
         this.taskLatch = new TaskCompletionLatch(nWorker);
     }

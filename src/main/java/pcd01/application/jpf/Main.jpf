@@ -1,5 +1,0 @@
-target = pcd01.application.Main
-
-classpath=build/classes/java/main/
-
-report.console.property_violation=error,trace

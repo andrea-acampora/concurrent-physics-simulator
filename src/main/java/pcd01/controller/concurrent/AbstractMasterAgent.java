@@ -13,16 +13,17 @@ import java.util.stream.IntStream;
 public abstract class AbstractMasterAgent extends Thread{
     private final long maxSteps;
     private final View view;
-    private final StartSynch synch;
     private final Flag stopFlag;
+    private final StartSynch startSynch;
     protected SimulationState state;
     protected int nWorker;
     protected TaskBag taskBag;
     protected TaskCompletionLatch taskLatch;
     protected AbstractTaskFactory taskFactory;
+    private static final double FPS = 60;
 
 
-    public AbstractMasterAgent(View view, SimulationState state, long maxSteps, Flag stopFlag, StartSynch synch) {
+    public AbstractMasterAgent(View view, SimulationState state, long maxSteps, Flag stopFlag, StartSynch startSynch) {
         this.state = state;
         this.maxSteps = maxSteps;
         this.view = view;
@@ -30,18 +31,21 @@ public abstract class AbstractMasterAgent extends Thread{
         this.nWorker = Runtime.getRuntime().availableProcessors() + 1;
         this.taskBag = new TaskBag();
         this.stopFlag = stopFlag;
-        this.synch = synch;
+        this.startSynch = startSynch;
     }
 
     public void run() {
 
         Chrono time = new Chrono();
+        startSynch.waitStart();
         this.createWorkerAgents();
-        if(Main.VIEW_ENABLED){
-            synch.waitStart();
-        }
         time.start();
-        while(state.getSteps() < maxSteps){
+        while( state.getSteps() < maxSteps ){
+            long initialTime = System.currentTimeMillis();
+            if(stopFlag.isSet()){
+                startSynch.waitStart();
+            }
+
             this.addComputeForcesTasksToBag();
             this.waitStepDone();
 
@@ -49,14 +53,14 @@ public abstract class AbstractMasterAgent extends Thread{
             this.waitStepDone();
 
             state.setVt(state.getVt() + state.getDt());
-
-            if(stopFlag.isSet()){
-                synch.waitStart();
-            }
-            if(Main.VIEW_ENABLED){
-                view.display(state);
-            }
+            view.display(state);
             state.incrementSteps();
+            double elapsed = System.currentTimeMillis() - initialTime;
+            if (elapsed < ((1 / FPS)*1000)) {
+                try {
+                    Thread.sleep((long) (((1 / FPS)*1000) - elapsed));
+                } catch(Exception ignored){}
+            }
         }
         time.stop();
         System.out.println("Time elapsed: " + time.getTime() + " ms.");
@@ -74,7 +78,7 @@ public abstract class AbstractMasterAgent extends Thread{
     }
 
     private void createWorkerAgents() {
-        IntStream.range(0, nWorker).forEach(a -> new WorkerAgent(taskBag, taskLatch, stopFlag, synch).start());
+        IntStream.range(0, nWorker).forEach(a -> new WorkerAgent(taskBag, taskLatch, stopFlag, startSynch).start());
     }
 
     abstract void addComputeForcesTasksToBag();
