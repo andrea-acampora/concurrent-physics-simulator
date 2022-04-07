@@ -18,13 +18,9 @@ public class TaskBag {
         notifyAll();
     }
 
-    public synchronized Task getATask() {
+    public synchronized Task getATask() throws InterruptedException {
         while(buffer.isEmpty()){
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            wait();
         }
         return buffer.removeFirst();
     }

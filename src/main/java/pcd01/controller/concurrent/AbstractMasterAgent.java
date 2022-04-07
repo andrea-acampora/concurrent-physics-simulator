@@ -8,6 +8,8 @@ import pcd01.model.concurrent.TaskFactory;
 import pcd01.utils.Chrono;
 import pcd01.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.IntStream;
 
 public abstract class AbstractMasterAgent extends Thread{
@@ -15,12 +17,13 @@ public abstract class AbstractMasterAgent extends Thread{
     private final View view;
     private final Flag stopFlag;
     private final StartSynch startSynch;
+    private List<WorkerAgent> workers;
     protected SimulationState state;
     protected int nWorker;
     protected TaskBag taskBag;
     protected TaskCompletionLatch taskLatch;
     protected AbstractTaskFactory taskFactory;
-    private static final double FPS = 60;
+    private static final double FPS = 120;
 
 
     public AbstractMasterAgent(View view, SimulationState state, long maxSteps, Flag stopFlag, StartSynch startSynch) {
@@ -32,6 +35,7 @@ public abstract class AbstractMasterAgent extends Thread{
         this.taskBag = new TaskBag();
         this.stopFlag = stopFlag;
         this.startSynch = startSynch;
+        this.workers = new ArrayList<>(nWorker);
     }
 
     public void run() {
@@ -63,6 +67,9 @@ public abstract class AbstractMasterAgent extends Thread{
             }
         }
         time.stop();
+        for (WorkerAgent worker : this.workers) {
+            worker.interrupt();
+        }
         System.out.println("Time elapsed: " + time.getTime() + " ms.");
         System.exit(0);
     }
@@ -78,7 +85,8 @@ public abstract class AbstractMasterAgent extends Thread{
     }
 
     private void createWorkerAgents() {
-        IntStream.range(0, nWorker).forEach(a -> new WorkerAgent(taskBag, taskLatch, stopFlag, startSynch).start());
+        IntStream.range(0, nWorker).forEach(a -> this.workers.add(new WorkerAgent(taskBag, taskLatch, stopFlag, startSynch)));
+        this.workers.forEach(Thread::start);
     }
 
     abstract void addComputeForcesTasksToBag();

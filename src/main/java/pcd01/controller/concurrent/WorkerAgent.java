@@ -20,12 +20,14 @@ public class WorkerAgent extends Thread {
     @Override
     public void run() {
         while (true) {
-            if (stopFlag.isSet()) {
-                startSynch.waitStart();
-            }
-            Task task = bag.getATask();
-            task.computeTask();
-            latch.notifyCompletion();
+            try{
+                if (stopFlag.isSet()) {
+                    startSynch.waitStart();
+                }
+                Task task = bag.getATask();
+                task.computeTask();
+                latch.notifyCompletion();
+            } catch (InterruptedException ignored){}
         }
     }
 

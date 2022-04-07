@@ -19,7 +19,7 @@ public class Controller implements InputListener {
 	private final Flag stopFlag;
 	private final StartSynch startSynch;
 
-	private int numberOfSteps = 2000;
+	private int numberOfSteps = 1000;
 
 	public Controller(final Model model, final View view) {
 		this.model = model;
