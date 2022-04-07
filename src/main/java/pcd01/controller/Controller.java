@@ -7,15 +7,7 @@ import pcd01.model.Model;
 
 public class Controller {
 
-
-	private Model model;
-	private MasterAgentOneBodyPerTask masterAgentOneBodyPerTask;
-
-	private int numberOfSteps = 2;
-
 	public Controller(final Model model) {
-		this.model = model;
-		this.masterAgentOneBodyPerTask = new MasterAgentOneBodyPerTask(model.getState(), numberOfSteps );
-		this.masterAgentOneBodyPerTask.start();
+		new MasterAgentOneBodyPerTask(model.getState(), 1 ).start();
 	}
 }

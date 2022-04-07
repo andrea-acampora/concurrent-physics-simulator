@@ -25,7 +25,7 @@ public class WorkerAgent extends Thread {
                 latch.notifyCompletion();
             }
         } catch (InterruptedException ignored) {}
-        log("finished");
+       // log("finished");
     }
 
     private void log(String msg){
