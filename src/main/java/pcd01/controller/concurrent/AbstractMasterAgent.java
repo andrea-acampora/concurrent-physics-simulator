@@ -5,7 +5,6 @@ import pcd01.model.SimulationState;
 import pcd01.model.concurrent.TaskBag;
 import pcd01.model.concurrent.TaskFactory;
 import pcd01.utils.Chrono;
-import gov.nasa.jpf.vm.Verify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,27 +32,19 @@ public abstract class AbstractMasterAgent extends Thread{
 
         Chrono time = new Chrono();
         this.createWorkerAgents();
-        Verify.beginAtomic();
         time.start();
-        Verify.endAtomic();
         while( state.getSteps() < maxSteps ){
             this.addComputeForcesTasksToBag();
             this.waitStepDone();
 
             this.addUpdatePositionTasksToBag();
             this.waitStepDone();
-            Verify.beginAtomic();
             state.setVt(state.getVt() + state.getDt());
             state.incrementSteps();
-            Verify.endAtomic();
         }
-        Verify.beginAtomic();
         time.stop();
-        Verify.endAtomic();
         for (WorkerAgent worker : this.workers) {
-            Verify.beginAtomic();
             worker.interrupt();
-            Verify.endAtomic();
         }
      //   log("finished");
         // System.out.println("Time elapsed: " + time.getTime() + " ms.");
@@ -66,18 +57,13 @@ public abstract class AbstractMasterAgent extends Thread{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Verify.beginAtomic();
         this.taskLatch.reset();
-
         this.taskBag.clear();
-        Verify.endAtomic();
     }
 
     private void createWorkerAgents() {
-        Verify.beginAtomic();
         IntStream.range(0, nWorker).forEach(a -> this.workers.add(new WorkerAgent(taskBag, taskLatch)));
         this.workers.forEach(Thread::start);
-        Verify.endAtomic();
     }
 
     abstract void addComputeForcesTasksToBag();

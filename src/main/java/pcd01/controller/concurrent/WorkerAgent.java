@@ -2,7 +2,6 @@ package pcd01.controller.concurrent;
 
 import pcd01.model.concurrent.Task;
 import pcd01.model.concurrent.TaskBag;
-import gov.nasa.jpf.vm.Verify;
 
 public class WorkerAgent extends Thread {
 
@@ -19,9 +18,7 @@ public class WorkerAgent extends Thread {
         try {
             while ( true ) {
                 Task task = bag.getATask();
-                Verify.beginAtomic();
                 task.computeTask();
-                Verify.endAtomic();
                 latch.notifyCompletion();
             }
         } catch (InterruptedException ignored) {}

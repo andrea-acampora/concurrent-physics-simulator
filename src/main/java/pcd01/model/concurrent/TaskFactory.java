@@ -1,6 +1,5 @@
 package pcd01.model.concurrent;
 
-import gov.nasa.jpf.vm.Verify;
 import pcd01.model.Body;
 import pcd01.model.SimulationState;
 import pcd01.utils.V2d;
@@ -12,7 +11,6 @@ public class TaskFactory implements AbstractTaskFactory {
     @Override
     public Task createComputeForcesTask(SimulationState state, List<Body> bodiesList) {
         return () -> {
-            Verify.beginAtomic();
             for (Body b : bodiesList) {
                 /* compute total force on bodies */
                 V2d totalForce = new V2d(0, 0);
@@ -35,20 +33,17 @@ public class TaskFactory implements AbstractTaskFactory {
                 /* update velocity */
                 b.updateVelocity(acc, state.getDt());
             }
-            Verify.endAtomic();
         };
     }
 
     @Override
     public Task createUpdatePositionTask(SimulationState state, List<Body> bodiesList) {
         return () -> {
-            Verify.beginAtomic();
             /* compute bodies new pos */
             for (Body b : bodiesList) {
                 b.updatePos(state.getDt());
                 b.checkAndSolveBoundaryCollision(state.getBounds());
             }
-            Verify.endAtomic();
         };
     }
 }
