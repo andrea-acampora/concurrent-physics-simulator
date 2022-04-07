@@ -16,13 +16,16 @@ public class WorkerAgent extends Thread {
 
     @Override
     public void run() {
-        while (true) {
-            Verify.beginAtomic();
-            Task task = bag.getATask();
-            Verify.endAtomic();
-            task.computeTask();
-            latch.notifyCompletion();
-        }
+        try {
+            while ( true ) {
+                Task task = bag.getATask();
+                Verify.beginAtomic();
+                task.computeTask();
+                Verify.endAtomic();
+                latch.notifyCompletion();
+            }
+        } catch (InterruptedException ignored) {}
+        log("finished");
     }
 
     private void log(String msg){

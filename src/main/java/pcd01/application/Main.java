@@ -7,7 +7,7 @@ import pcd01.model.ModelImpl;
 public class Main {
 
     public static void main(String[] args) {
-        int numberOfBodies = 10;
+        int numberOfBodies = 2;
         Model model = new ModelImpl(numberOfBodies);
         Controller controller = new Controller(model);
     }

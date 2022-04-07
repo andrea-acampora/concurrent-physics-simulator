@@ -1,5 +1,6 @@
 package pcd01.model;
 
+import gov.nasa.jpf.vm.Verify;
 import pcd01.utils.P2d;
 import pcd01.utils.V2d;
 
@@ -25,6 +26,7 @@ public class SimulationState {
     long steps;
 
     public SimulationState(final int nBodies) {
+        Verify.beginAtomic();
         this.nBodies = nBodies;
         this.vt = 0;
         this.dt = 0.001;
@@ -39,6 +41,7 @@ public class SimulationState {
             Body b = new Body(i, new P2d(x, y), new V2d(0, 0), 10);
             bodies.add(b);
         }
+        Verify.endAtomic();
     }
 
     public ArrayList<Body> getBodies() {

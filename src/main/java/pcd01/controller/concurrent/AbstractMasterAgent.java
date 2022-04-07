@@ -7,10 +7,13 @@ import pcd01.model.concurrent.TaskFactory;
 import pcd01.utils.Chrono;
 import gov.nasa.jpf.vm.Verify;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.IntStream;
 
 public abstract class AbstractMasterAgent extends Thread{
     private final long maxSteps;
+    private List<WorkerAgent> workers;
     protected SimulationState state;
     protected int nWorker;
     protected TaskBag taskBag;
@@ -21,14 +24,17 @@ public abstract class AbstractMasterAgent extends Thread{
         this.state = state;
         this.maxSteps = maxSteps;
         this.taskFactory = new TaskFactory();
-        this.nWorker = Runtime.getRuntime().availableProcessors() + 1;
+        this.nWorker = 2;//Runtime.getRuntime().availableProcessors() + 1;
         this.taskBag = new TaskBag();
+        this.workers = new ArrayList<>(nWorker);
     }
 
     public void run() {
 
         Chrono time = new Chrono();
+        Verify.beginAtomic();
         this.createWorkerAgents();
+        Verify.endAtomic();
         time.start();
         while( state.getSteps() < maxSteps ){
             this.addComputeForcesTasksToBag();
@@ -40,8 +46,12 @@ public abstract class AbstractMasterAgent extends Thread{
             state.incrementSteps();
         }
         time.stop();
-       // System.out.println("Time elapsed: " + time.getTime() + " ms.");
-        System.exit(0);
+        for (WorkerAgent worker : this.workers) {
+            worker.interrupt();
+        }
+     //   log("finished");
+        // System.out.println("Time elapsed: " + time.getTime() + " ms.");
+       // System.exit(0);
     }
 
     private void waitStepDone() {
@@ -50,17 +60,14 @@ public abstract class AbstractMasterAgent extends Thread{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Verify.beginAtomic();
         this.taskLatch.reset();
-        Verify.endAtomic();
 
-        Verify.beginAtomic();
         this.taskBag.clear();
-        Verify.endAtomic();
     }
 
     private void createWorkerAgents() {
-        IntStream.range(0, nWorker).forEach(a -> new WorkerAgent(taskBag, taskLatch).start());
+        IntStream.range(0, nWorker).forEach(a -> this.workers.add(new WorkerAgent(taskBag, taskLatch)));
+        this.workers.forEach(Thread::start);
     }
 
     abstract void addComputeForcesTasksToBag();
