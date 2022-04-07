@@ -1,5 +1,6 @@
 package pcd01.controller.concurrent;
 
+import gov.nasa.jpf.vm.Verify;
 import pcd01.model.concurrent.AbstractTaskFactory;
 import pcd01.model.SimulationState;
 import pcd01.model.concurrent.TaskBag;
@@ -30,9 +31,11 @@ public abstract class AbstractMasterAgent extends Thread{
 
     public void run() {
 
+        Verify.beginAtomic();
         Chrono time = new Chrono();
         this.createWorkerAgents();
         time.start();
+        Verify.endAtomic();
         while( state.getSteps() < maxSteps ){
             this.addComputeForcesTasksToBag();
             this.waitStepDone();

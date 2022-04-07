@@ -26,6 +26,7 @@ public class SimulationState {
     long steps;
 
     public SimulationState(final int nBodies) {
+        Verify.beginAtomic();
         this.nBodies = nBodies;
         this.vt = 0;
         this.dt = 0.001;
@@ -39,6 +40,7 @@ public class SimulationState {
             double y = bounds.getY0()*0.25 + rand.nextDouble() * (bounds.getY1() - bounds.getY0()) * 0.25;
             Body b = new Body(i, new P2d(x, y), new V2d(0, 0), 10);
             bodies.add(b);
+            Verify.endAtomic();
         }
     }
 
