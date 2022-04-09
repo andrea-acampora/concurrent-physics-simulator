@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public abstract class AbstractMasterAgent extends Thread{
+public abstract class AbstractMasterAgent extends Thread {
     private final long maxSteps;
     private final List<WorkerAgent> workers;
     protected SimulationState state;
@@ -24,7 +24,7 @@ public abstract class AbstractMasterAgent extends Thread{
         this.state = state;
         this.maxSteps = maxSteps;
         this.taskFactory = new TaskFactory();
-        this.nWorker = 2;
+        this.nWorker = Verify.getInt(1, Runtime.getRuntime().availableProcessors())+1;
         this.taskBag = new TaskBag();
         this.workers = new ArrayList<>(nWorker);
     }
