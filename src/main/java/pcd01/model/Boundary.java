@@ -1,14 +1,14 @@
-package pcd01;
+package pcd01.model;
 
 /**
  * Boundary of the field where bodies move. 
  *
  */
 public class Boundary {
-	private double x0;
-	private double y0;
-	private double x1;
-	private double y1;
+	private final double x0;
+	private final double y0;
+	private final double x1;
+	private final double y1;
 
 	public Boundary(double x0, double y0, double x1, double y1){
 		this.x0=x0;

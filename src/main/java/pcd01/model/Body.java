@@ -1,5 +1,9 @@
-package pcd01;
+package pcd01.model;
 
+
+import pcd01.exception.InfiniteForceException;
+import pcd01.utils.P2d;
+import pcd01.utils.V2d;
 
 /*
  * This class represents a body
@@ -10,10 +14,10 @@ public class Body {
 	private static final double REPULSIVE_CONST = 0.01;
 	private static final double FRICTION_CONST = 1;
 	
-    private P2d pos;
-    private V2d vel;
-    private double mass;
-    private int id;
+    private final P2d pos;
+    private final V2d vel;
+    private final double mass;
+    private final int id;
     
     public Body(int id, P2d pos, V2d vel, double mass){
     	this.id = id;
@@ -48,8 +52,8 @@ public class Body {
      * 
      * @param dt time elapsed 
      */
-    public void updatePos(double dt){    	
-    	pos.sum(new V2d(vel).scalarMul(dt));
+    public void updatePos(double dt){
+        pos.sum(new V2d(vel).scalarMul(dt));
     }
 
     /**
@@ -60,17 +64,7 @@ public class Body {
     public void updateVelocity(V2d acc, double dt){    	
     	vel.sum(new V2d(acc).scalarMul(dt));
     }
-    
-    /**
-     * Change the velocity
-     * 
-     * @param vx
-     * @param vy
-     */
-    public void changeVel(double vx, double vy){
-    	vel.change(vx, vy);
-    }
-  	
+
     /**
      * Computes the distance from the specified body
      * 
@@ -139,7 +133,5 @@ public class Body {
             pos.change(pos.getX(), bounds.getY0());
             vel.change(vel.getX(), -vel.getY());
         }
-    }        
-    
-
+    }
 }

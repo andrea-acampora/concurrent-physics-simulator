@@ -1,4 +1,4 @@
-package pcd01;
+package pcd01.utils;
 
 public class P2d { 
 
@@ -26,5 +26,13 @@ public class P2d {
 
     public double getY() {
     	return y;
+    }
+
+    @Override
+    public String toString() {
+        return "P2d{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
     }
 }
