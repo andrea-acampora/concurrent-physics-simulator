@@ -12,7 +12,8 @@ public class Main {
         int numberOfBodies = 500;
         Model model = new ModelImpl(numberOfBodies);
         View view = new SimulationView();
-        Controller controller = new Controller(model, view);
+        Controller controller = new ControllerImpl(model, view);
+        controller.execute();
         view.start();
     }
 }

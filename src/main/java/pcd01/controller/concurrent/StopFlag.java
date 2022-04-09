@@ -1,9 +1,9 @@
 package pcd01.controller.concurrent;
 
-public class Flag {
+public class StopFlag {
     private boolean flag;
 
-    public Flag() {
+    public StopFlag() {
         flag = false;
     }
 

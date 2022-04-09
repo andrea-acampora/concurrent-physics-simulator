@@ -7,10 +7,10 @@ public class WorkerAgent extends Thread {
 
     private final TaskBag bag;
     private final TaskCompletionLatch latch;
-    private final Flag stopFlag;
+    private final StopFlag stopFlag;
     private final StartSynch startSynch;
 
-    public WorkerAgent(TaskBag bag, TaskCompletionLatch latch, Flag stopFlag, StartSynch startSynch) {
+    public WorkerAgent(TaskBag bag, TaskCompletionLatch latch, StopFlag stopFlag, StartSynch startSynch) {
         this.bag = bag;
         this.latch = latch;
         this.stopFlag = stopFlag;

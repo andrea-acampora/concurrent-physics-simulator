@@ -1,10 +1,8 @@
 package pcd01.controller.concurrent;
 
-import pcd01.application.Main;
-import pcd01.model.concurrent.AbstractTaskFactory;
 import pcd01.model.SimulationState;
+import pcd01.model.concurrent.AbstractTaskFactory;
 import pcd01.model.concurrent.TaskBag;
-import pcd01.model.concurrent.TaskFactory;
 import pcd01.utils.Chrono;
 import pcd01.view.View;
 
@@ -15,9 +13,9 @@ import java.util.stream.IntStream;
 public abstract class AbstractMasterAgent extends Thread{
     private final long maxSteps;
     private final View view;
-    private final Flag stopFlag;
+    private final StopFlag stopFlag;
     private final StartSynch startSynch;
-    private List<WorkerAgent> workers;
+    private final List<WorkerAgent> workers;
     protected SimulationState state;
     protected int nWorker;
     protected TaskBag taskBag;
@@ -26,11 +24,11 @@ public abstract class AbstractMasterAgent extends Thread{
     private static final double FPS = 120;
 
 
-    public AbstractMasterAgent(View view, SimulationState state, long maxSteps, Flag stopFlag, StartSynch startSynch) {
+    public AbstractMasterAgent(View view, SimulationState state, AbstractTaskFactory taskFactory, long maxSteps, StopFlag stopFlag, StartSynch startSynch) {
         this.state = state;
         this.maxSteps = maxSteps;
         this.view = view;
-        this.taskFactory = new TaskFactory();
+        this.taskFactory = taskFactory;
         this.nWorker = Runtime.getRuntime().availableProcessors() + 1;
         this.taskBag = new TaskBag();
         this.stopFlag = stopFlag;
@@ -71,7 +69,6 @@ public abstract class AbstractMasterAgent extends Thread{
             worker.interrupt();
         }
         System.out.println("Time elapsed: " + time.getTime() + " ms.");
-        System.exit(0);
     }
 
     private void waitStepDone() {
@@ -81,7 +78,6 @@ public abstract class AbstractMasterAgent extends Thread{
             e.printStackTrace();
         }
         this.taskLatch.reset();
-        this.taskBag.clear();
     }
 
     private void createWorkerAgents() {
