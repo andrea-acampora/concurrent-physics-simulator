@@ -3,6 +3,11 @@ package pcd01.controller.concurrent;
 import pcd01.model.concurrent.Task;
 import pcd01.model.concurrent.TaskBag;
 
+/**
+ * The agent responsible to execute the computation of the simulation.
+ * It continuously tries to get a {@link Task} from a {@link TaskBag} and executes it.
+ * It also notifies the end of the execution of the task to a {@link TaskCompletionLatch}.
+ */
 public class WorkerAgent extends Thread {
 
     private final TaskBag bag;
@@ -28,12 +33,6 @@ public class WorkerAgent extends Thread {
                 task.computeTask();
                 latch.notifyCompletion();
             } catch (InterruptedException ignored){}
-        }
-    }
-
-    private void log(String msg){
-        synchronized(System.out){
-            System.out.println("[ worker " + getName() + "] " + msg);
         }
     }
 }

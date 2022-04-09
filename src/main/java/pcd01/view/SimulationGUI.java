@@ -15,17 +15,16 @@ import javax.swing.*;
 public class SimulationGUI {
 
 	private final VisualiserFrame frame;
-	
 
 	public SimulationGUI(){
-		frame = new VisualiserFrame(620, 620);
+		this.frame = new VisualiserFrame(620, 620);
 	}
 
-	public void addListener(InputListener l) {
-		frame.addListener(l);
+	public void addListener(final InputListener l) {
+		this.frame.addListener(l);
 	}
 
-	public void display(SimulationState state) {
+	public void display(final SimulationState state) {
 		ArrayList<Body> defCopy = new ArrayList<>();
 		state.getBodies().forEach(b -> defCopy.add(new Body(b.getId(), new P2d(b.getPos().getX(), b.getPos().getY()), new V2d(b.getVel().x, b.getVel().y), b.getMass())));
 		frame.display(defCopy, state.getVt(), state.getSteps(), state.getBounds());

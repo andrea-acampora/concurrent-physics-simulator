@@ -21,7 +21,7 @@ public class V2d  {
 
     public double x,y;
 
-    public V2d(double x, double y){
+    public V2d(double x, double y) {
         this.x = x;
         this.y = y;
     }

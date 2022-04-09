@@ -1,9 +1,13 @@
 package pcd01.controller.concurrent;
 
+/**
+ * Implemented as monitor and used to synchronize the {@link AbstractMasterAgent} the start of the simulation.
+ */
 public class StartSynch {
+
     private boolean started;
 
-    public StartSynch(){
+    public StartSynch() {
         started = false;
     }
 
@@ -23,7 +27,7 @@ public class StartSynch {
         notifyAll();
     }
 
-    public synchronized void reset(){
+    public synchronized void reset() {
         started = false;
     }
 }

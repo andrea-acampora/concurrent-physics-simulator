@@ -1,17 +1,20 @@
 package pcd01.controller.concurrent;
 
+/**
+ * Implemented as a Monitor, used by {@link AbstractMasterAgent} to wait for the end of worker's tasks execution.
+ */
 public class TaskCompletionLatch {
 
     private final int nTasks;
     private int nCompletionsNotified;
 
-    TaskCompletionLatch(int nTasks){
+    TaskCompletionLatch(int nTasks) {
         this.nTasks = nTasks;
-        nCompletionsNotified = 0;
+        this.nCompletionsNotified = 0;
     }
 
     public synchronized void reset() {
-        nCompletionsNotified = 0;
+        this.nCompletionsNotified = 0;
     }
 
     public synchronized void waitCompletion() throws InterruptedException {
@@ -21,7 +24,7 @@ public class TaskCompletionLatch {
     }
 
     public synchronized void notifyCompletion() {
-        nCompletionsNotified++;
+        this.nCompletionsNotified++;
         notifyAll();
     }
 

@@ -6,15 +6,16 @@ import pcd01.utils.V2d;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Contains all the information about the simulation.
+ */
 public class SimulationState {
 
     /* bodies in the field */
-    private ArrayList<Body> bodies;
+    private final ArrayList<Body> bodies;
 
     /* boundary of the field */
-    private Boundary bounds;
-
-    private int nBodies;
+    private final Boundary bounds;
 
     /* virtual time */
     private double vt;
@@ -25,15 +26,14 @@ public class SimulationState {
     long steps;
 
     public SimulationState(final int nBodies) {
-        this.nBodies = nBodies;
         this.vt = 0;
         this.dt = 0.001;
-        steps = 0;
+        this.steps = 0;
 
-        bounds = new Boundary(-6.0, -6.0, 6.0, 6.0);
+        this.bounds = new Boundary(-6.0, -6.0, 6.0, 6.0);
         Random rand = new Random(System.currentTimeMillis());
-        bodies = new ArrayList<>();
-        for (int i = 0; i < this.nBodies; i++) {
+        this.bodies = new ArrayList<>();
+        for (int i = 0; i < nBodies; i++) {
             double x = bounds.getX0()*0.25 + rand.nextDouble() * (bounds.getX1() - bounds.getX0()) * 0.25;
             double y = bounds.getY0()*0.25 + rand.nextDouble() * (bounds.getY1() - bounds.getY0()) * 0.25;
             Body b = new Body(i, new P2d(x, y), new V2d(0, 0), 10);

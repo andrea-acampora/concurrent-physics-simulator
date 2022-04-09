@@ -4,7 +4,7 @@ public class P2d {
 
     private double x, y;
 
-    public P2d(double x,double y){
+    public P2d(double x,double y) {
         this.x = x;
         this.y = y;
     }
@@ -15,7 +15,7 @@ public class P2d {
     	return this;
     }
      
-    public void change(double x, double y){
+    public void change(double x, double y) {
     	this.x = x;
     	this.y = y;
     }

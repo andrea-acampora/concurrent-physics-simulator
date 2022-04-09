@@ -3,6 +3,7 @@ package pcd01.view;
 import pcd01.controller.InputListener;
 import pcd01.model.SimulationState;
 
+
 public class SimulationView implements View {
 
     private final SimulationGUI gui;

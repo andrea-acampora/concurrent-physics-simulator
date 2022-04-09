@@ -8,15 +8,14 @@ import pcd01.view.View;
 
 public class ControllerImpl implements InputListener, Controller {
 
-
-	private Model model;
-	private View view;
+	private final Model model;
+	private final View view;
 	private final MasterAgentOneBodyPerTask masterAgentOneBodyPerTask;
-	//private MasterAgentSubListPerTask masterAgentSubListPerTask;
+ // private final MasterAgentSubListPerTask masterAgentSubListPerTask;
 	private final StopFlag stopFlag;
 	private final StartSynch startSynch;
 
-	private int numberOfSteps = 1000;
+	private static final int NUMBER_OF_STEPS = 1000;
 
 	public ControllerImpl(final Model model, final View view) {
 		this.model = model;
@@ -24,7 +23,7 @@ public class ControllerImpl implements InputListener, Controller {
 		this.view.addListener(this);
 		this.stopFlag = new StopFlag();
 		this.startSynch = new StartSynch();
-		this.masterAgentOneBodyPerTask = new MasterAgentOneBodyPerTask(view, model.getState(), model.getTaskFactory(), numberOfSteps, stopFlag, startSynch );
+		this.masterAgentOneBodyPerTask = new MasterAgentOneBodyPerTask(view, model.getState(), model.getTaskFactory(), NUMBER_OF_STEPS, stopFlag, startSynch );
 		// this.masterAgentSubListPerTask = new MasterAgentSubListPerTask(view, model.getState(), numberOfSteps, stopFlag, startSynch);
 	}
 
@@ -41,6 +40,6 @@ public class ControllerImpl implements InputListener, Controller {
 	@Override
 	public void execute() {
 		this.masterAgentOneBodyPerTask.start();
-		// this.masterAgentSubListPerTask.start();
+	 // this.masterAgentSubListPerTask.start();
 	}
 }

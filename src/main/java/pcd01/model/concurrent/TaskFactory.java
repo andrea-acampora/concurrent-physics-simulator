@@ -12,9 +12,7 @@ public class TaskFactory implements AbstractTaskFactory {
     public Task createComputeForcesTask(SimulationState state, List<Body> bodiesList) {
         return () -> {
             for (Body b : bodiesList) {
-                /* compute total force on bodies */
                 V2d totalForce = new V2d(0, 0);
-
                 /* compute total repulsive force */
                 for (int j = 0; j < state.getBodies().size(); j++) {
                     Body otherBody = state.getBodies().get(j);
@@ -25,7 +23,6 @@ public class TaskFactory implements AbstractTaskFactory {
                         } catch (Exception ignored) {}
                     }
                 }
-
                 /* add friction force */
                 totalForce.sum(b.getCurrentFrictionForce());
                 /* compute instant acceleration */
@@ -39,7 +36,7 @@ public class TaskFactory implements AbstractTaskFactory {
     @Override
     public Task createUpdatePositionTask(SimulationState state, List<Body> bodiesList) {
         return () -> {
-            /* compute bodies new pos */
+            /* update bodies new pos */
             for (Body b : bodiesList) {
                 b.updatePos(state.getDt());
                 b.checkAndSolveBoundaryCollision(state.getBounds());

@@ -4,10 +4,14 @@ import com.google.common.collect.Lists;
 import pcd01.model.Body;
 import pcd01.model.SimulationState;
 import pcd01.model.concurrent.AbstractTaskFactory;
+import pcd01.model.concurrent.Task;
 import pcd01.view.View;
 import java.util.List;
 import java.util.stream.IntStream;
 
+/**
+ * In this implementation of Master Agent every {@link Task} manage a sub-list of {@link Body} of the simulation.
+ */
 public class MasterAgentSubListPerTask extends AbstractMasterAgent {
     private final List<List<Body>> bodiesSplit;
 

@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
+/**
+ *  This class is implemented as an Abstract Class to make it easier manage two different implementation of Master Agent.
+ *  Despite this, at every simulation only one of them will be executed.
+ */
 public abstract class AbstractMasterAgent extends Thread{
     private final long maxSteps;
     private final View view;
@@ -42,9 +46,9 @@ public abstract class AbstractMasterAgent extends Thread{
         startSynch.waitStart();
         this.createWorkerAgents();
         time.start();
-        while( state.getSteps() < maxSteps ){
+        while( state.getSteps() < maxSteps ) {
             long initialTime = System.currentTimeMillis();
-            if(stopFlag.isSet()){
+            if (stopFlag.isSet()) {
                 startSynch.waitStart();
             }
 
@@ -57,6 +61,7 @@ public abstract class AbstractMasterAgent extends Thread{
             state.setVt(state.getVt() + state.getDt());
             view.display(state);
             state.incrementSteps();
+
             double elapsed = System.currentTimeMillis() - initialTime;
             if (elapsed < ((1 / FPS)*1000)) {
                 try {
@@ -65,10 +70,11 @@ public abstract class AbstractMasterAgent extends Thread{
             }
         }
         time.stop();
+        System.out.println("Time elapsed: " + time.getTime() + " ms.");
+        // Gracefully kill the execution of worker agents.
         for (WorkerAgent worker : this.workers) {
             worker.interrupt();
         }
-        System.out.println("Time elapsed: " + time.getTime() + " ms.");
     }
 
     private void waitStepDone() {
@@ -87,10 +93,4 @@ public abstract class AbstractMasterAgent extends Thread{
 
     abstract void addComputeForcesTasksToBag();
     abstract void addUpdatePositionTasksToBag();
-
-    private void log(String msg){
-        synchronized(System.out){
-            System.out.println("[ master ] " + msg);
-        }
-    }
 }

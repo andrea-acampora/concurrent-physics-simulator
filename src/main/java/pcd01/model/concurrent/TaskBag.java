@@ -1,12 +1,19 @@
 package pcd01.model.concurrent;
 
+import pcd01.controller.concurrent.AbstractMasterAgent;
+import pcd01.controller.concurrent.WorkerAgent;
+
 import java.util.LinkedList;
 
+/**
+ * Implemented as a monitor, it is used by {@link AbstractMasterAgent} to assign the tasks at {@link WorkerAgent}.
+ */
 public class TaskBag {
-    private LinkedList<Task> buffer;
+
+    private final LinkedList<Task> buffer;
 
     public TaskBag() {
-        this.buffer = new LinkedList<Task>();
+        this.buffer = new LinkedList<>();
     }
 
     public synchronized void clear() {
