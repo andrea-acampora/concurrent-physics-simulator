@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 
 public abstract class AbstractMasterAgent extends Thread{
     private final long maxSteps;
-    private List<WorkerAgent> workers;
+    private final List<WorkerAgent> workers;
     protected SimulationState state;
     protected int nWorker;
     protected TaskBag taskBag;
@@ -24,7 +24,7 @@ public abstract class AbstractMasterAgent extends Thread{
         this.state = state;
         this.maxSteps = maxSteps;
         this.taskFactory = new TaskFactory();
-        this.nWorker = 2;//Runtime.getRuntime().availableProcessors() + 1;
+        this.nWorker = 2;
         this.taskBag = new TaskBag();
         this.workers = new ArrayList<>(nWorker);
     }
@@ -49,9 +49,6 @@ public abstract class AbstractMasterAgent extends Thread{
         for (WorkerAgent worker : this.workers) {
             worker.interrupt();
         }
-     //   log("finished");
-        // System.out.println("Time elapsed: " + time.getTime() + " ms.");
-       // System.exit(0);
     }
 
     private void waitStepDone() {
@@ -71,10 +68,4 @@ public abstract class AbstractMasterAgent extends Thread{
 
     abstract void addComputeForcesTasksToBag();
     abstract void addUpdatePositionTasksToBag();
-
-    private void log(String msg){
-        synchronized(System.out){
-            System.out.println("[ master ] " + msg);
-        }
-    }
 }

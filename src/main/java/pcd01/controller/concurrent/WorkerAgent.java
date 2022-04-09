@@ -22,12 +22,5 @@ public class WorkerAgent extends Thread {
                 latch.notifyCompletion();
             }
         } catch (InterruptedException ignored) {}
-       // log("finished");
-    }
-
-    private void log(String msg){
-        synchronized(System.out){
-            System.out.println("[ worker " + getName() + "] " + msg);
-        }
     }
 }
