@@ -4,8 +4,8 @@ import pcd01.controller.InputListener;
 import pcd01.model.Body;
 import pcd01.model.Boundary;
 import pcd01.model.SimulationState;
-import pcd01.utils.P2d;
-import pcd01.utils.V2d;
+import pcd01.model.P2d;
+import pcd01.model.V2d;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -129,8 +129,8 @@ public class SimulationGUI {
 		private double vt;
 		private double scale = 1;
 
-		private long dx;
-		private long dy;
+		private final long dx;
+		private final long dy;
 
 		public VisualiserPanel(int w, int h){
 			setSize(w,h);

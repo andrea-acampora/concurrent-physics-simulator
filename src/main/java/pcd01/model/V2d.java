@@ -7,7 +7,7 @@
  * Use is subject to license terms.
  *
  */
-package pcd01.utils;
+package pcd01.model;
 
 import pcd01.exception.NullVectorException;
 

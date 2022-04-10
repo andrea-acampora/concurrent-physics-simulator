@@ -1,4 +1,4 @@
-package pcd01.utils;
+package pcd01.model;
 
 public class P2d { 
 

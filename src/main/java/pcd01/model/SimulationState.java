@@ -1,8 +1,5 @@
 package pcd01.model;
 
-import pcd01.utils.P2d;
-import pcd01.utils.V2d;
-
 import java.util.ArrayList;
 import java.util.Random;
 

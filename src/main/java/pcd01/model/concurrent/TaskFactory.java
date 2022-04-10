@@ -2,7 +2,7 @@ package pcd01.model.concurrent;
 
 import pcd01.model.Body;
 import pcd01.model.SimulationState;
-import pcd01.utils.V2d;
+import pcd01.model.V2d;
 
 import java.util.List;
 
