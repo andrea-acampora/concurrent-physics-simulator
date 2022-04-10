@@ -8,7 +8,10 @@ The aim of the project is to parallelize this computation and also to improve th
 
 ./gradlew run
 
+To understand the concurrent architecture of the simulator read the project report under the **doc** folder.
+
 **Authors**:
 
 - Andrea Acampora 
 - Giacomo Accursi
+
