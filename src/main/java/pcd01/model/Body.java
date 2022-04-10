@@ -1,8 +1,6 @@
 package pcd01.model;
 
 import pcd01.exception.InfiniteForceException;
-import pcd01.utils.P2d;
-import pcd01.utils.V2d;
 
 /*
  * This class represents a body of the simulation.
